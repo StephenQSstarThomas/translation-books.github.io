@@ -1,94 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Playground Translation</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Noto Serif', serif;
-      background: #f4f4f4;
-      margin: 0;
-      color: #333;
-    }
-    header {
-      text-align: center;
-      padding: 2em 0;
-      background: #3f51b5;
-      color: white;
-    }
-    header img {
-      max-width: 200px;
-      border-radius: 4px;
-      margin-top: 1em;
-    }
-    .container {
-      width: 90%;
-      max-width: 1200px;
-      margin: 2em auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.5em;
-    }
-    .book {
-      background: white;
-      border-radius: 6px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      padding: 1em;
-      text-align: center;
-    }
-    .book img {
-      width: 100%;
-      height: auto;
-      border-radius: 4px;
-    }
-    .links {
-      margin-top: 0.5em;
-    }
-    .links a {
-      display: inline-block;
-      margin: 0 0.5em;
-      color: #3f51b5;
-      text-decoration: none;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playground Translation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Serif', serif;
+            background: #f4f4f4;
+            margin: 0;
+            color: #333;
+        }
+        header {
+            text-align: center;
+            padding: 2em 0;
+            background: #3f51b5;
+            color: white;
+        }
+        header img {
+            max-width: 200px;
+            border-radius: 4px;
+            margin-top: 1em;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 2em auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5em;
+        }
+        .book {
+            background: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 1em;
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+        .book:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .book canvas {
+            width: 100%;
+            max-width: 200px;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 0.5em;
+        }
+        .book h3 {
+            margin: 0.5em 0;
+            color: #3f51b5;
+            font-size: 1.1em;
+        }
+        .links {
+            margin-top: 0.5em;
+        }
+        .links a {
+            display: inline-block;
+            margin: 0 0.5em;
+            padding: 0.3em 0.8em;
+            color: white;
+            background: #3f51b5;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.9em;
+            transition: background-color 0.2s ease;
+        }
+        .links a:hover {
+            background: #303f9f;
+        }
+        .loading {
+            color: #666;
+            font-style: italic;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 </head>
 <body>
-  <header>
-    <h1>Playground 中文翻译</h1>
-    <p>Translated by Jolly Sammy · Story by Richard Powers</p>
-    <img src="playground-book.jpg" alt="Playground cover">
-  </header>
-  <div class="container">
-    <div class="book">
-      <img src="playground-book.jpg" alt="cover">
-      <div class="links">
-        <a href="Translation—Playground_1-2.pdf" target="_blank">View</a>
-        <a href="Translation—Playground_1-2.pdf" download>Download</a>
-      </div>
+    <header>
+        <h1>Playground 中文翻译</h1>
+        <p>Translated by Jolly Sammy · Story by Richard Powers</p>
+        <img src="playground-book.jpg" alt="Playground cover">
+    </header>
+    <div class="container">
+        <div class="book" data-pdf="Translation—Playground_1-2.pdf">
+            <canvas id="canvas-1"></canvas>
+            <h3>Playground 1-2</h3>
+            <div class="loading">Loading preview...</div>
+            <div class="links" style="display: none;">
+                <a href="Translation—Playground_1-2.pdf" target="_blank">View</a>
+                <a href="Translation—Playground_1-2.pdf" download>Download</a>
+            </div>
+        </div>
+        <div class="book" data-pdf="Translation—Playground_3-4.pdf">
+            <canvas id="canvas-2"></canvas>
+            <h3>Playground 3-4</h3>
+            <div class="loading">Loading preview...</div>
+            <div class="links" style="display: none;">
+                <a href="Translation—Playground_3-4.pdf" target="_blank">View</a>
+                <a href="Translation—Playground_3-4.pdf" download>Download</a>
+            </div>
+        </div>
+        <div class="book" data-pdf="Translation—Playground_5-6.pdf">
+            <canvas id="canvas-3"></canvas>
+            <h3>Playground 5-6</h3>
+            <div class="loading">Loading preview...</div>
+            <div class="links" style="display: none;">
+                <a href="Translation—Playground_5-6.pdf" target="_blank">View</a>
+                <a href="Translation—Playground_5-6.pdf" download>Download</a>
+            </div>
+        </div>
+        <div class="book" data-pdf="Translation—Playground_7-8.pdf">
+            <canvas id="canvas-4"></canvas>
+            <h3>Playground 7-8</h3>
+            <div class="loading">Loading preview...</div>
+            <div class="links" style="display: none;">
+                <a href="Translation—Playground_7-8.pdf" target="_blank">View</a>
+                <a href="Translation—Playground_7-8.pdf" download>Download</a>
+            </div>
+        </div>
     </div>
-    <div class="book">
-      <img src="playground-book.jpg" alt="cover">
-      <div class="links">
-        <a href="Translation—Playground_3-4.pdf" target="_blank">View</a>
-        <a href="Translation—Playground_3-4.pdf" download>Download</a>
-      </div>
-    </div>
-    <div class="book">
-      <img src="playground-book.jpg" alt="cover">
-      <div class="links">
-        <a href="Translation—Playground_5-6.pdf" target="_blank">View</a>
-        <a href="Translation—Playground_5-6.pdf" download>Download</a>
-      </div>
-    </div>
-    <div class="book">
-      <img src="playground-book.jpg" alt="cover">
-      <div class="links">
-        <a href="Translation—Playground_7-8.pdf" target="_blank">View</a>
-        <a href="Translation—Playground_7-8.pdf" download>Download</a>
-      </div>
-    </div>
-  </div>
+
+    <script>
+        // Set PDF.js worker
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        // Function to render PDF first page
+        async function renderPDFPreview(pdfUrl, canvasId, bookElement) {
+            try {
+                const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
+                const page = await pdf.getPage(1);
+                
+                const canvas = document.getElementById(canvasId);
+                const context = canvas.getContext('2d');
+                
+                // Calculate scale to fit canvas width
+                const viewport = page.getViewport({ scale: 1 });
+                const scale = 200 / viewport.width;
+                const scaledViewport = page.getViewport({ scale: scale });
+                
+                canvas.width = scaledViewport.width;
+                canvas.height = scaledViewport.height;
+                
+                await page.render({
+                    canvasContext: context,
+                    viewport: scaledViewport
+                }).promise;
+                
+                // Hide loading text and show links
+                const loadingText = bookElement.querySelector('.loading');
+                const links = bookElement.querySelector('.links');
+                if (loadingText) loadingText.style.display = 'none';
+                if (links) links.style.display = 'block';
+                
+            } catch (error) {
+                console.error('Error loading PDF:', error);
+                const loadingText = bookElement.querySelector('.loading');
+                if (loadingText) {
+                    loadingText.textContent = 'Preview unavailable';
+                    loadingText.style.color = '#999';
+                }
+                // Still show links even if preview fails
+                const links = bookElement.querySelector('.links');
+                if (links) links.style.display = 'block';
+            }
+        }
+
+        // Load all PDF previews
+        document.addEventListener('DOMContentLoaded', function() {
+            const books = document.querySelectorAll('.book[data-pdf]');
+            books.forEach((book, index) => {
+                const pdfUrl = book.dataset.pdf;
+                const canvasId = `canvas-${index + 1}`;
+                renderPDFPreview(pdfUrl, canvasId, book);
+            });
+        });
+    </script>
 </body>
 </html>
