@@ -6,13 +6,6 @@
 
 ## 在线阅读
 
-本仓库启用了 GitHub Pages，访问地址为：<https://your-username.github.io/translation-books.github.io/>（请将 `your-username` 替换为你的 GitHub 用户名）。
-
-无需克隆仓库，提交到 `main` 分支后 GitHub 会自动构建并发布网站。
-
-## 部署说明
-
-1. 进入仓库设置，启用 **GitHub Pages**，选择 `main` 分支和 `/` 根目录即可。
-2. GitHub 会在几分钟内自动构建并发布静态站点。
+本仓库启用了 GitHub Pages，访问地址为：[https://stephenqsstarthomas.github.io/translation-books.github.io/](https://stephenqsstarthomas.github.io/translation-books.github.io/)）。
 
 站点主页会列出所有 PDF，每个文件都提供在线预览（浏览器直接打开）和本地下载两个链接。
