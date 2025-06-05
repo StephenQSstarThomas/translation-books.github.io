@@ -50,6 +50,7 @@
             border: 1px solid #ddd;
             border-radius: 4px;
             margin-bottom: 0.5em;
+            cursor: pointer;
         }
         .book h3 {
             margin: 0.5em 0;
@@ -59,23 +60,134 @@
         .links {
             margin-top: 0.5em;
         }
-        .links a {
+        .links a, .links button {
             display: inline-block;
-            margin: 0 0.5em;
+            margin: 0 0.3em;
             padding: 0.3em 0.8em;
             color: white;
             background: #3f51b5;
             text-decoration: none;
+            border: none;
             border-radius: 4px;
             font-size: 0.9em;
+            cursor: pointer;
             transition: background-color 0.2s ease;
         }
-        .links a:hover {
+        .links a:hover, .links button:hover {
             background: #303f9f;
+        }
+        .read-btn {
+            background: #4caf50 !important;
+        }
+        .read-btn:hover {
+            background: #45a049 !important;
         }
         .loading {
             color: #666;
             font-style: italic;
+        }
+
+        /* PDF Reader Modal */
+        .pdf-reader-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+        }
+        .pdf-reader-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .reader-header {
+            background: #3f51b5;
+            color: white;
+            padding: 1em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1em;
+        }
+        .reader-title {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .reader-controls {
+            display: flex;
+            align-items: center;
+            gap: 1em;
+            flex-wrap: wrap;
+        }
+        .reader-controls button {
+            background: #fff;
+            color: #3f51b5;
+            border: none;
+            padding: 0.5em 1em;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+        .reader-controls button:hover {
+            background: #f0f0f0;
+        }
+        .reader-controls button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .page-info {
+            font-size: 0.9em;
+        }
+        .pdf-container {
+            flex: 1;
+            overflow: auto;
+            background: #666;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 2em;
+        }
+        .pdf-canvas {
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            max-width: 100%;
+            height: auto;
+        }
+        .chapter-nav {
+            background: #2c387e;
+            color: white;
+            padding: 0.5em 1em;
+            text-align: center;
+        }
+        .chapter-nav button {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 0.5em 1em;
+            margin: 0 0.5em;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .chapter-nav button:hover {
+            background: #45a049;
+        }
+        .chapter-nav button:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .reader-controls {
+                justify-content: center;
+            }
+            .pdf-container {
+                padding: 1em;
+            }
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -87,40 +199,69 @@
         <img src="playground-book.jpg" alt="Playground cover">
     </header>
     <div class="container">
-        <div class="book" data-pdf="Translation—Playground_1-2.pdf">
+        <div class="book" data-pdf="Translation—Playground_1-2.pdf" data-chapter="0">
             <canvas id="canvas-1"></canvas>
             <h3>Playground 1-2</h3>
             <div class="loading">Loading preview...</div>
             <div class="links" style="display: none;">
+                <button class="read-btn" onclick="openReader(0)">Read</button>
                 <a href="Translation—Playground_1-2.pdf" target="_blank">View</a>
                 <a href="Translation—Playground_1-2.pdf" download>Download</a>
             </div>
         </div>
-        <div class="book" data-pdf="Translation—Playground_3-4.pdf">
+        <div class="book" data-pdf="Translation—Playground_3-4.pdf" data-chapter="1">
             <canvas id="canvas-2"></canvas>
             <h3>Playground 3-4</h3>
             <div class="loading">Loading preview...</div>
             <div class="links" style="display: none;">
+                <button class="read-btn" onclick="openReader(1)">Read</button>
                 <a href="Translation—Playground_3-4.pdf" target="_blank">View</a>
                 <a href="Translation—Playground_3-4.pdf" download>Download</a>
             </div>
         </div>
-        <div class="book" data-pdf="Translation—Playground_5-6.pdf">
+        <div class="book" data-pdf="Translation—Playground_5-6.pdf" data-chapter="2">
             <canvas id="canvas-3"></canvas>
             <h3>Playground 5-6</h3>
             <div class="loading">Loading preview...</div>
             <div class="links" style="display: none;">
+                <button class="read-btn" onclick="openReader(2)">Read</button>
                 <a href="Translation—Playground_5-6.pdf" target="_blank">View</a>
                 <a href="Translation—Playground_5-6.pdf" download>Download</a>
             </div>
         </div>
-        <div class="book" data-pdf="Translation—Playground_7-8.pdf">
+        <div class="book" data-pdf="Translation—Playground_7-8.pdf" data-chapter="3">
             <canvas id="canvas-4"></canvas>
             <h3>Playground 7-8</h3>
             <div class="loading">Loading preview...</div>
             <div class="links" style="display: none;">
+                <button class="read-btn" onclick="openReader(3)">Read</button>
                 <a href="Translation—Playground_7-8.pdf" target="_blank">View</a>
                 <a href="Translation—Playground_7-8.pdf" download>Download</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- PDF Reader Modal -->
+    <div id="pdfReaderModal" class="pdf-reader-modal">
+        <div class="pdf-reader-content">
+            <div class="reader-header">
+                <div class="reader-title" id="readerTitle">Playground 1-2</div>
+                <div class="reader-controls">
+                    <button onclick="prevPage()">← Previous Page</button>
+                    <span class="page-info" id="pageInfo">Page 1 of 1</span>
+                    <button onclick="nextPage()">Next Page →</button>
+                    <button onclick="zoomOut()">Zoom Out</button>
+                    <button onclick="zoomIn()">Zoom In</button>
+                    <button onclick="closeReader()">Close</button>
+                </div>
+            </div>
+            <div class="chapter-nav">
+                <button onclick="prevChapter()" id="prevChapterBtn">← Previous Chapter</button>
+                <span id="chapterInfo">Chapter 1-2</span>
+                <button onclick="nextChapter()" id="nextChapterBtn">Next Chapter →</button>
+            </div>
+            <div class="pdf-container">
+                <canvas id="readerCanvas" class="pdf-canvas"></canvas>
             </div>
         </div>
     </div>
@@ -128,6 +269,21 @@
     <script>
         // Set PDF.js worker
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        // PDF chapters data
+        const chapters = [
+            { pdf: "Translation—Playground_1-2.pdf", name: "Playground 1-2" },
+            { pdf: "Translation—Playground_3-4.pdf", name: "Playground 3-4" },
+            { pdf: "Translation—Playground_5-6.pdf", name: "Playground 5-6" },
+            { pdf: "Translation—Playground_7-8.pdf", name: "Playground 7-8" }
+        ];
+
+        // Reader state
+        let currentChapter = 0;
+        let currentPage = 1;
+        let totalPages = 1;
+        let currentPDF = null;
+        let scale = 1.5;
 
         // Function to render PDF first page
         async function renderPDFPreview(pdfUrl, canvasId, bookElement) {
@@ -164,11 +320,162 @@
                     loadingText.textContent = 'Preview unavailable';
                     loadingText.style.color = '#999';
                 }
-                // Still show links even if preview fails
                 const links = bookElement.querySelector('.links');
                 if (links) links.style.display = 'block';
             }
         }
+
+        // Open PDF reader
+        async function openReader(chapterIndex) {
+            currentChapter = chapterIndex;
+            currentPage = 1;
+            
+            document.getElementById('pdfReaderModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            
+            await loadChapter(chapterIndex);
+        }
+
+        // Load a chapter
+        async function loadChapter(chapterIndex) {
+            try {
+                const chapter = chapters[chapterIndex];
+                currentPDF = await pdfjsLib.getDocument(chapter.pdf).promise;
+                totalPages = currentPDF.numPages;
+                currentPage = 1;
+                
+                document.getElementById('readerTitle').textContent = chapter.name;
+                document.getElementById('chapterInfo').textContent = chapter.name;
+                
+                // Update chapter navigation buttons
+                document.getElementById('prevChapterBtn').disabled = chapterIndex === 0;
+                document.getElementById('nextChapterBtn').disabled = chapterIndex === chapters.length - 1;
+                
+                await renderPage();
+            } catch (error) {
+                console.error('Error loading chapter:', error);
+                alert('Error loading chapter. Please try again.');
+            }
+        }
+
+        // Render current page
+        async function renderPage() {
+            if (!currentPDF) return;
+            
+            try {
+                const page = await currentPDF.getPage(currentPage);
+                const canvas = document.getElementById('readerCanvas');
+                const context = canvas.getContext('2d');
+                
+                const viewport = page.getViewport({ scale: scale });
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+                
+                await page.render({
+                    canvasContext: context,
+                    viewport: viewport
+                }).promise;
+                
+                updatePageInfo();
+            } catch (error) {
+                console.error('Error rendering page:', error);
+            }
+        }
+
+        // Update page info
+        function updatePageInfo() {
+            document.getElementById('pageInfo').textContent = `Page ${currentPage} of ${totalPages}`;
+        }
+
+        // Navigation functions
+        async function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                await renderPage();
+            }
+        }
+
+        async function nextPage() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                await renderPage();
+            } else {
+                // Auto-advance to next chapter
+                if (currentChapter < chapters.length - 1) {
+                    await nextChapter();
+                }
+            }
+        }
+
+        async function prevChapter() {
+            if (currentChapter > 0) {
+                await loadChapter(currentChapter - 1);
+                currentChapter--;
+            }
+        }
+
+        async function nextChapter() {
+            if (currentChapter < chapters.length - 1) {
+                await loadChapter(currentChapter + 1);
+                currentChapter++;
+            }
+        }
+
+        // Zoom functions
+        async function zoomIn() {
+            scale = Math.min(scale * 1.2, 3);
+            await renderPage();
+        }
+
+        async function zoomOut() {
+            scale = Math.max(scale / 1.2, 0.5);
+            await renderPage();
+        }
+
+        // Close reader
+        function closeReader() {
+            document.getElementById('pdfReaderModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            currentPDF = null;
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (document.getElementById('pdfReaderModal').style.display === 'block') {
+                switch(e.key) {
+                    case 'ArrowLeft':
+                        e.preventDefault();
+                        prevPage();
+                        break;
+                    case 'ArrowRight':
+                        e.preventDefault();
+                        nextPage();
+                        break;
+                    case 'Escape':
+                        e.preventDefault();
+                        closeReader();
+                        break;
+                    case '=':
+                    case '+':
+                        e.preventDefault();
+                        zoomIn();
+                        break;
+                    case '-':
+                        e.preventDefault();
+                        zoomOut();
+                        break;
+                }
+            }
+        });
+
+        // Click on preview to open reader
+        document.addEventListener('click', function(e) {
+            if (e.target.tagName === 'CANVAS' && e.target.id.startsWith('canvas-')) {
+                const bookElement = e.target.closest('.book');
+                const chapterIndex = parseInt(bookElement.dataset.chapter);
+                openReader(chapterIndex);
+            }
+        });
 
         // Load all PDF previews
         document.addEventListener('DOMContentLoaded', function() {
